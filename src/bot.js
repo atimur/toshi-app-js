@@ -5,19 +5,37 @@ const Fiat = require('./lib/Fiat')
 var rp = require('request');
 
 
+// EWA token:
+// `0x6FC773BA50dc1dc6A4A3698251BAF3Cee1B6eb26`
+// EWB token:
+// `0x92112771f33BE187CaF2226a041bE6F2bC2319f5`
+
 let bot = new Bot()
 
 let tokens = {
-  "ETHwaterloo": "0x",
-  "GNO": "0x"
+  "EWA": "0x6FC773BA50dc1dc6A4A3698251BAF3Cee1B6eb26",
+  "EWB": "0x92112771f33BE187CaF2226a041bE6F2bC2319f5"
 }
 
-let tokenNames = ["ETHwaterloo", "GNO"]
+let tokenNames = ["EWA", "EWB"]
 
-let trasnferURL = 'https://b54e5c11.ngrok.io'
+// let tokenPairs = 
+
+
+let transferURL = 'https://b54e5c11.ngrok.io'
+let swapURL = ''
+let allowanceURL = ''
 
 function transferURLConstruct(tokenName){
-  return trasnferURL + '/?tokenAddress='+tokens[tokenName]
+  return transferURL + '/?tokenAddress='+tokens[tokenName]
+}
+
+function swapURLConstruct(t1, t2){
+  return swapURL+"/?makerTokenAddress="+tokens[t1]+'?takerTokenAddress='+tokens[t2]
+}
+
+function allowSpendingURLConstruct(tokenName){
+  return allowanceURL + '/?tokenAddress='+tokens[tokenName]
 }
 
 // ROUTING
@@ -54,12 +72,16 @@ function onCommand(session, command) {
     case 'count':
       count(session)
       break
-    case 'token1':
-      token1Bal(session)
+    case tokenNames[0] || tokenNames[1]:
+      tokenBalance(session, command.content.value)
       break
     case 'Transfer Token':
       transferToken(session)
       break
+    case 'Swap Token':
+      swapToken(session)
+      break
+
     }
 }
 
@@ -87,26 +109,27 @@ function onPayment(session, message) {
 
 // STATES
 
-function welcome(session) {
-  sendMessage(session, `Heyyyy!!`)
+
+function allowSpending(session) {
+  session.reply(SOFA.Message({
+    body: "Which one?",
+    controls: [
+      {type: "button", label: tokenNames[0], action: "Webview::" +transferURLConstruct(tokenNames[0])},
+      {type: "button", label: tokenNames[1], action: "Webview::" +transferURLConstruct(tokenNames[1])}
+    ]
+  }))
 }
 
-function pong(session) {
-  sendMessage(session, `Pong`)
-}
 
-// example of how to store state on each user
-function count(session) {
-  let count = (session.get('count') || 0) + 1
-  session.set('count', count)
-  sendMessage(session, `${count}`)
-}
+function swapToken(session) {
+  session.reply(SOFA.Message({
+    body: "Which pair?",
+    controls: [
+      {type: "button", label: tokenNames[0]+'->'+tokenNames[1], action: "Webview::" +swapURLConstruct(tokenNames[0], tokenNames[0])},
+      {type: "button", label: tokenNames[1]+'->'+tokenNames[0], action: "Webview::" +swapURLConstruct(tokenNames[1], tokenNames[0])}
+    ]
+  }))
 
-function donate(session) {
-  // request $1 USD at current exchange rates
-  Fiat.fetch().then((toEth) => {
-    session.requestEth(toEth.USD(1))
-  })
 }
 
 
@@ -128,7 +151,7 @@ session.reply(SOFA.Message({
 
 
 
-function token1Bal(session) {
+function tokenBalance(session, tokenName) {
 
 //   var options = {
 //     uri: 'https://api.tokenbalance.com/token/0x8f8221afbb33998d8584a2b05749ba73c37a938a/0xfdae0a43d0a26befb74ad531b83f285e40b3abab',
@@ -149,23 +172,25 @@ function token1Bal(session) {
 //         console.log("failed")
 //     });
 
-    rp('https://api.tokenbalance.com/token/0x8f8221afbb33998d8584a2b05749ba73c37a938a/0xfdae0a43d0a26befb74ad531b83f285e40b3abab', function (error, response, body) {
-      // console.log('error:', error); // Print the error if one occurred
-      // console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-      // console.log('body:', body); // Print the HTML for the Google homepage.
 
-      if (!error && response.statusCode == 200) {
-        var info = JSON.parse(body);
-        console.log(info.balance + " Stars");
-        // console.log(info.forks_count + " Forks");
-        sendTokenBalance(session, "Your balance is: "+info.balance)
-        
-      }
-      else{
-        console.log(body + error)
-        sendTokenBalance(session, "error")
-        
-      }
+    rp('https://api.tokenbalance.com/token/'+tokens[tokenName]+'/'+ session.get('paymentAddress'), 
+    function (error, response, body) {
+        // console.log('error:', error); // Print the error if one occurred
+        // console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+        // console.log('body:', body); // Print the HTML for the Google homepage.
+
+        if (!error && response.statusCode == 200) {
+          var info = JSON.parse(body);
+          console.log(info.balance + " Stars");
+          // console.log(info.forks_count + " Forks");
+          sendTokenBalance(session, "Your balance is: "+info.balance)
+          
+        }
+        else{
+          console.log(body + error)
+          sendTokenBalance(session, "error")
+          
+        }
       
   })
   
@@ -195,23 +220,21 @@ function sendMessage(session) {
     controls: [
       {
         type: "group",
-        label: "Trip",
+        label: "See Token Balance",
         controls: [
-          {type: "button", label: "Directions", action: "Webview::http://faucet.ropsten.be:3001"},
-          {type: "button", label: "Timetable", value: "timetable"},
-          {type: "button", label: "Exit Info", value: "exit"},
-          {type: "button", label: "Service Conditions", action: "Webview::https://0xproject.com/portal"}
+          {type: "button", label: tokenNames[0], value: tokenNames[0]},
+          {type: "button", label: tokenNames[1], value: tokenNames[1]}
+          
         ]
       },
       {
         type: "group",
-        label: "See Token Balance",
+        label: "Token Actions",
         controls: [
-          {type: "button", label: "token1", value: "token1"}
+          {type: "button", label: "Swap", value: "Swap Token"},
+          {type: "button", label: "Transfer Token", value: "Transfer Token"}          
         ]
       },
-      {type: "button", label: "Transfer Token", value: "Transfer Token"}
-      
     ]
   }))
 
