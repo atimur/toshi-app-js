@@ -112,14 +112,16 @@ function donate(session) {
 
 function transferToken(session) {
 
-  session.reply(SOFA.Message({
-    "body": "Which one?",
-    "controls": [
-      {"type": "button", "label": tokenNames[0], "action": "Webview::" +transferURLConstruct(tokenNames[0]) },
-      {"type": "button", "label": tokenNames[1], "action": "Webview::" +transferURLConstruct(tokenNames[1]) } 
-    ]
-  })
-)
+
+session.reply(SOFA.Message({
+  body: "Which one?",
+  controls: [
+    {type: "button", label: tokenNames[0], action: "Webview::" +transferURLConstruct(tokenNames[0])},
+    {type: "button", label: tokenNames[1], action: "Webview::" +transferURLConstruct(tokenNames[1])}
+  ]
+}))
+
+
   sendMessage(session)
 
 }
