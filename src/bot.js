@@ -118,13 +118,13 @@ function token1Bal(session) {
 //         console.log("failed")
 //     });
 
-    rp('https://api.tokenbalance.com/token/0x8f8221afbb33998d8584a2b05749ba73c37a938a/0xfdae0a43d0a26befb74ad531b83f285e40b3abab', function (error, response, body) {
-      console.log('error:', error); // Print the error if one occurred
-      console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-      console.log('body:', body); // Print the HTML for the Google homepage.
+  //   rp('https://api.tokenbalance.com/token/0x8f8221afbb33998d8584a2b05749ba73c37a938a/0xfdae0a43d0a26befb74ad531b83f285e40b3abab', function (error, response, body) {
+  //     console.log('error:', error); // Print the error if one occurred
+  //     console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+  //     console.log('body:', body); // Print the HTML for the Google homepage.
 
-      sendMessage(session, repos.balance)
-  })
+  //     sendMessage(session, repos.balance)
+  // })
   
 
   
@@ -169,7 +169,7 @@ function sendMessage(session, message) {
         type: "group",
         label: "Services",
         "controls": [
-          {type: "button", label: "Buy Ticket", action: "Webview::http://06890ec1.ngrok.io/"},
+          {type: "button", label: "Buy Ticket", action: "Webview::http://c8366268.ngrok.io"},
           {type: "button", label: "Support", value: "support"}
         ]
       }
