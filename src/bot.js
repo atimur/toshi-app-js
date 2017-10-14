@@ -88,9 +88,16 @@ function onCommand(session, command) {
     case 'Swap Token':
       swapToken(session)
       break
+    case 'Allow Spending':
+      allowSpending(session)
+      break
+    default:
+      sendMessage(session)
+      break
 
     }
 }
+
 
 function onPayment(session, message) {
   if (message.fromAddress == session.config.paymentAddress) {
@@ -121,8 +128,10 @@ function allowSpending(session) {
   session.reply(SOFA.Message({
     body: "Which one?",
     controls: [
-      {type: "button", label: tokenNames[0], action: "Webview::" +transferURLConstruct(tokenNames[0])},
-      {type: "button", label: tokenNames[1], action: "Webview::" +transferURLConstruct(tokenNames[1])}
+      // {type: "button", label: tokenNames[0], action: "Webview::" +allowSpendingURLConstruct(tokenNames[0])},
+      {type: "button", label: tokenNames[0], action: "Webview::" +'https://0xproject.com/portal/balances'},
+
+      {type: "button", label: tokenNames[1], action: "Webview::" +allowSpendingURLConstruct(tokenNames[1])}
     ]
   }))
 }
@@ -160,25 +169,6 @@ session.reply(SOFA.Message({
 
 function tokenBalance(session, tokenName) {
 
-//   var options = {
-//     uri: 'https://api.tokenbalance.com/token/0x8f8221afbb33998d8584a2b05749ba73c37a938a/0xfdae0a43d0a26befb74ad531b83f285e40b3abab',
-//     headers: {
-//         'User-Agent': 'Request-Promise'
-//     },
-//     json: true // Automatically parses the JSON string in the response
-// };
-
-// rp(options)
-//     .then(function (repos) {
-
-//         console.log('User has %d repos', repos.balance);
-//         sendMessage(session, repos.balance)
-//     })
-//     .catch(function (err) {
-//         // API call failed...
-//         console.log("failed")
-//     });
-
 
     rp('https://api.tokenbalance.com/token/'+tokens[tokenName]+'/'+ session.get('paymentAddress'), 
     function (error, response, body) {
@@ -190,7 +180,7 @@ function tokenBalance(session, tokenName) {
           var info = JSON.parse(body);
           console.log(info.balance + " Stars");
           // console.log(info.forks_count + " Forks");
-          sendTokenBalance(session, "Your balance is: "+info.balance)
+          sendTokenBalance(session, "Your "+tokenName+"balance is: "+info.balance)
           
         }
         else{
@@ -231,7 +221,6 @@ function sendMessage(session) {
         controls: [
           {type: "button", label: tokenNames[0], value: tokenNames[0]},
           {type: "button", label: tokenNames[1], value: tokenNames[1]}
-          
         ]
       },
       {
@@ -239,9 +228,11 @@ function sendMessage(session) {
         label: "Token Actions",
         controls: [
           {type: "button", label: "Swap", value: "Swap Token"},
-          {type: "button", label: "Transfer Token", value: "Transfer Token"}          
+          {type: "button", label: "Transfer Token", value: "Transfer Token"},
+          {type: "button", label: "Allow Spending", value: "Allow Spending"}
+          
         ]
-      },
+      }
     ]
   }))
 
