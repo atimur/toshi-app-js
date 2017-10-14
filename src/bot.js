@@ -122,7 +122,7 @@ session.reply(SOFA.Message({
 }))
 
 
-  sendMessage(session)
+  // sendMessage(session)
 
 }
 
