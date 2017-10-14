@@ -132,7 +132,7 @@ function swapToken(session) {
       {type: "button", label: tokenNames[0]+'->'+tokenNames[1], action: "Webview::" +swapURLConstruct(tokenNames[0], tokenNames[0])},
       {type: "button", label: tokenNames[1]+'->'+tokenNames[0], action: "Webview::" +swapURLConstruct(tokenNames[1], tokenNames[0])}
     ]
-  }))
+  }))        
 
 }
 
@@ -182,7 +182,7 @@ function tokenBalance(session, tokenName) {
         // console.log('error:', error); // Print the error if one occurred
         // console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
         // console.log('body:', body); // Print the HTML for the Google homepage.
-
+        console.log(tokenName)
         if (!error && response.statusCode == 200) {
           var info = JSON.parse(body);
           console.log(info.balance + " Stars");
