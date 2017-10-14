@@ -7,6 +7,19 @@ var rp = require('request');
 
 let bot = new Bot()
 
+let tokens = {
+  "ETHwaterloo": "0x",
+  "GNO": "0x"
+}
+
+let tokenNames = ["ETHwaterloo", "GNO"]
+
+let trasnferURL = 'https://b54e5c11.ngrok.io'
+
+function transferURLConstruct(tokenName){
+  return trasnferURL + '/?tokenAddress='+tokens[tokenName]
+}
+
 // ROUTING
 
 bot.onEvent = function(session, message) {
@@ -44,8 +57,8 @@ function onCommand(session, command) {
     case 'token1':
       token1Bal(session)
       break
-    case 'donate':
-      donate(session)
+    case '"Transfer Token"':
+      transferToken(session)
       break
     }
 }
@@ -95,6 +108,22 @@ function donate(session) {
     session.requestEth(toEth.USD(1))
   })
 }
+
+
+function transferToken(session) {
+
+  session.reply(SOFA.Message({
+    "body": "Which one?",
+    "controls": [
+      {"type": "button", "label": tokenNames[0], "action": "Webview::" +transferURLConstruct(tokenNames[0]) },
+      {"type": "button", "label": tokenNames[1], "action": "Webview::" +transferURLConstruct(tokenNames[1]) } 
+    ]
+  })
+)
+  sendMessage(session)
+
+}
+
 
 
 function token1Bal(session) {
@@ -174,19 +203,17 @@ function sendMessage(session) {
       },
       {
         type: "group",
-        label: "see balance",
+        label: "See Token Balance",
         controls: [
           {type: "button", label: "token1", value: "token1"}
         ]
       },
       {
-        type: "group",
-        label: "Services",
-        "controls": [
-          {type: "button", label: "Buy Ticket", action: "Webview::http://c8366268.ngrok.io"},
-          {type: "button", label: "Support", value: "support"}
-        ]
+        type: "button",
+        label: "Transfer Token",
+        action: "Transfer Token"
       }
     ]
   }))
+
 }
