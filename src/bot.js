@@ -208,12 +208,8 @@ function sendMessage(session) {
           {type: "button", label: "token1", value: "token1"}
         ]
       },
-      {
-        type: "button",
-        label: "Transfer Token",
-        action: "Transfer Token"
-      }
-    ]
+      {type: "button", label: "Transfer Token", value: "Transfer Token"}
+    ]  
   }))
 
 }
