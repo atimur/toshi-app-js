@@ -127,12 +127,12 @@ function token1Bal(session) {
         var info = JSON.parse(body);
         console.log(info.balance + " Stars");
         // console.log(info.forks_count + " Forks");
-        sendMessage(session, "HEY"+info.balance)
+        sendTokenBalance(session, "HEY"+info.balance)
         
       }
       else{
         console.log(body + error)
-        sendMessage(session, "error")
+        sendTokenBalance(session, "error")
         
       }
       
@@ -142,19 +142,21 @@ function token1Bal(session) {
   
 }
 
+
+function sendTokenBalance(session, bal) {
+    
+  session.reply(SOFA.Message({
+    body: message,
+    showKeyboard: false
+  }))
+
+  sendMessage(session)
+}
+
 // HELPERS
 
-function sendMessage(session, message) {
-  // let controls = [
-  //   {type: 'button', label: 'Ping', value: 'ping'},
-  //   {type: 'button', label: 'Count', value: 'count'},
-  //   {type: 'button', label: 'Donate', value: 'donate'}
-  // ]
-  // session.reply(SOFA.Message({
-  //   body: message,
-  //   controls: controls,
-  //   showKeyboard: false,
-  // }))
+function sendMessage(session) {
+
 
 
   session.reply(SOFA.Message({
