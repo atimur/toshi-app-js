@@ -60,8 +60,12 @@ bot.onEvent = function(session, message) {
   }
 }
 
+function welcome(session){
+  sendMessage(session)
+}
+
 function onMessage(session, message) {
-  welcome(session)
+  sendMessage(session)
 }
 
 function onCommand(session, command) {
