@@ -79,6 +79,9 @@ function onCommand(session, command) {
     case tokenNames[0] || tokenNames[1]:
       tokenBalance(session, command.content.value)
       break
+    case tokenNames[1]:
+      tokenBalance(session, command.content.value)
+      break
     case 'Transfer Token':
       transferToken(session)
       break
