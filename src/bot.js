@@ -93,14 +93,39 @@ function donate(session) {
 // HELPERS
 
 function sendMessage(session, message) {
-  let controls = [
-    {type: 'button', label: 'Ping', value: 'ping'},
-    {type: 'button', label: 'Count', value: 'count'},
-    {type: 'button', label: 'Donate', value: 'donate'}
-  ]
+  // let controls = [
+  //   {type: 'button', label: 'Ping', value: 'ping'},
+  //   {type: 'button', label: 'Count', value: 'count'},
+  //   {type: 'button', label: 'Donate', value: 'donate'}
+  // ]
+  // session.reply(SOFA.Message({
+  //   body: message,
+  //   controls: controls,
+  //   showKeyboard: false,
+  // }))
+
+
   session.reply(SOFA.Message({
-    body: message,
-    controls: controls,
-    showKeyboard: false,
+    body: "What would you like to do next?",
+    controls: [
+      {
+        type: "group",
+        label: "Trip",
+        controls: [
+          {type: "button", label: "Directions", action: "Webview::https://0xproject.com/portal"},
+          {type: "button", label: "Timetable", value: "timetable"},
+          {type: "button", label: "Exit Info", value: "exit"},
+          {type: "button", label: "Service Conditions", action: "Webview::https://0xproject.com/portal"}
+        ]
+      },
+      {
+        type: "group",
+        label: "Services",
+        "controls": [
+          {type: "button", label: "Buy Ticket", action: "Webview::https://mydapp.com/#buy-ticket"},
+          {type: "button", label: "Support", value: "support"}
+        ]
+      }
+    ]
   }))
 }
