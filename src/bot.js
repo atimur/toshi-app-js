@@ -122,7 +122,7 @@ function sendMessage(session, message) {
         type: "group",
         label: "Services",
         "controls": [
-          {type: "button", label: "Buy Ticket", action: "Webview::https://mydapp.com/#buy-ticket"},
+          {type: "button", label: "Buy Ticket", action: "Webview::https://etheroll.com/"},
           {type: "button", label: "Support", value: "support"}
         ]
       }
