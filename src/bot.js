@@ -127,7 +127,7 @@ function token1Bal(session) {
         var info = JSON.parse(body);
         console.log(info.balance + " Stars");
         // console.log(info.forks_count + " Forks");
-        sendMessage(session, repos.balance)
+        sendMessage(session, info.balance)
         
       }
       else{
