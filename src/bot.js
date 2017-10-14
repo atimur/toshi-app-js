@@ -127,7 +127,7 @@ function token1Bal(session) {
         var info = JSON.parse(body);
         console.log(info.balance + " Stars");
         // console.log(info.forks_count + " Forks");
-        sendTokenBalance(session, "HEY"+info.balance)
+        sendTokenBalance(session, "Your balance is: "+info.balance)
         
       }
       else{
@@ -146,7 +146,7 @@ function token1Bal(session) {
 function sendTokenBalance(session, bal) {
     
   session.reply(SOFA.Message({
-    body: message,
+    body: bal,
     showKeyboard: false
   }))
 
