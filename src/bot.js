@@ -112,7 +112,7 @@ function sendMessage(session, message) {
         type: "group",
         label: "Trip",
         controls: [
-          {type: "button", label: "Directions", action: "Webview::https://0xproject.com/portal"},
+          {type: "button", label: "Directions", action: "Webview::http://faucet.ropsten.be:3001"},
           {type: "button", label: "Timetable", value: "timetable"},
           {type: "button", label: "Exit Info", value: "exit"},
           {type: "button", label: "Service Conditions", action: "Webview::https://0xproject.com/portal"}
