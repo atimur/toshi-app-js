@@ -2,6 +2,9 @@ const Bot = require('./lib/Bot')
 const SOFA = require('sofa-js')
 const Fiat = require('./lib/Fiat')
 
+var rp = require('request-promise');
+
+
 let bot = new Bot()
 
 // ROUTING
@@ -37,6 +40,9 @@ function onCommand(session, command) {
       break
     case 'count':
       count(session)
+      break
+    case 'token1':
+      token1Bal(session)
       break
     case 'donate':
       donate(session)
@@ -90,6 +96,33 @@ function donate(session) {
   })
 }
 
+
+function token1Bal(session) {
+
+  var options = {
+    uri: 'https://api.tokenbalance.com/token/0x8f8221afbb33998d8584a2b05749ba73c37a938a/0xfdae0a43d0a26befb74ad531b83f285e40b3abab',
+    headers: {
+        'User-Agent': 'Request-Promise'
+    },
+    json: true // Automatically parses the JSON string in the response
+};
+
+rp(options)
+    .then(function (repos) {
+
+        console.log('User has %d repos', repos.balance);
+        sendMessage(session, repos.balance)
+    })
+    .catch(function (err) {
+        // API call failed...
+        console.log("failed")
+    });
+
+  
+
+  
+}
+
 // HELPERS
 
 function sendMessage(session, message) {
@@ -116,6 +149,13 @@ function sendMessage(session, message) {
           {type: "button", label: "Timetable", value: "timetable"},
           {type: "button", label: "Exit Info", value: "exit"},
           {type: "button", label: "Service Conditions", action: "Webview::https://0xproject.com/portal"}
+        ]
+      },
+      {
+        type: "group",
+        label: "see balance",
+        controls: [
+          {type: "button", label: "token1", value: "token1"}
         ]
       },
       {
