@@ -2,7 +2,7 @@ const Bot = require('./lib/Bot')
 const SOFA = require('sofa-js')
 const Fiat = require('./lib/Fiat')
 
-// var rp = require('request');
+var rp = require('request');
 
 
 let bot = new Bot()
@@ -118,13 +118,25 @@ function token1Bal(session) {
 //         console.log("failed")
 //     });
 
-  //   rp('https://api.tokenbalance.com/token/0x8f8221afbb33998d8584a2b05749ba73c37a938a/0xfdae0a43d0a26befb74ad531b83f285e40b3abab', function (error, response, body) {
-  //     console.log('error:', error); // Print the error if one occurred
-  //     console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-  //     console.log('body:', body); // Print the HTML for the Google homepage.
+    rp('https://api.tokenbalance.com/token/0x8f8221afbb33998d8584a2b05749ba73c37a938a/0xfdae0a43d0a26befb74ad531b83f285e40b3abab', function (error, response, body) {
+      // console.log('error:', error); // Print the error if one occurred
+      // console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+      // console.log('body:', body); // Print the HTML for the Google homepage.
 
-  //     sendMessage(session, repos.balance)
-  // })
+      if (!error && response.statusCode == 200) {
+        var info = JSON.parse(body);
+        console.log(info.balance + " Stars");
+        // console.log(info.forks_count + " Forks");
+        sendMessage(session, repos.balance)
+        
+      }
+      else{
+        console.log(body + error)
+        sendMessage(session, "error")
+        
+      }
+      
+  })
   
 
   
