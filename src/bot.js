@@ -57,7 +57,7 @@ function onCommand(session, command) {
     case 'token1':
       token1Bal(session)
       break
-    case '"Transfer Token"':
+    case 'Transfer Token':
       transferToken(session)
       break
     }
@@ -209,7 +209,8 @@ function sendMessage(session) {
         ]
       },
       {type: "button", label: "Transfer Token", value: "Transfer Token"}
-    ]  
+      
+    ]
   }))
 
 }
