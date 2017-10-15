@@ -22,8 +22,8 @@ let tokenNames = ["EWA", "EWB"]
 // let tokenPairs = 
 
 
-let transferURL = 'http://29a20f66.ngrok.io'
-let swapURL = 'http://29a20f66.ngrok.io'
+let transferURL = 'http://bac67dcd.ngrok.io'
+let swapURL = 'http://bac67dcd.ngrok.io'
 let allowanceURL = ''
 
 function transferURLConstruct(tokenName){
