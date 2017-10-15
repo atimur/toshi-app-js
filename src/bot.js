@@ -22,8 +22,8 @@ let tokenNames = ["EWA", "EWB"]
 // let tokenPairs = 
 
 
-let transferURL = 'https://b54e5c11.ngrok.io'
-let swapURL = ''
+let transferURL = 'http://b5c0102c.ngrok.io'
+let swapURL = 'http://b5c0102c.ngrok.io'
 let allowanceURL = ''
 
 function transferURLConstruct(tokenName){
@@ -76,7 +76,7 @@ function onCommand(session, command) {
     case 'count':
       count(session)
       break
-    case tokenNames[0] || tokenNames[1]:
+    case tokenNames[0]:
       tokenBalance(session, command.content.value)
       break
     case tokenNames[1]:
